@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track your daily calories, macros, and nutrition goals with this beautiful calorie tracker app.">
+    <!-- TODO(security): In production, CSP should be delivered via HTTP header, not meta tag. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'; frame-ancestors 'none';">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <title>NutriFlow — Calorie & Macro Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Background ambient blobs -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header" id="app-header">
+            <div class="header-left">
+                <div class="logo" id="logo">
+                    <div class="logo-icon" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="14" cy="14" r="12" stroke="url(#logoGrad)" stroke-width="2.5" fill="none"/>
+                            <path d="M14 6 C14 6 18 10 18 14 C18 18 14 22 14 22 C14 22 10 18 10 14 C10 10 14 6 14 6Z" fill="url(#logoGrad)" opacity="0.8"/>
+                            <defs>
+                                <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+                                    <stop offset="0%" stop-color="#6366f1"/>
+                                    <stop offset="100%" stop-color="#a78bfa"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h1 class="logo-text">NutriFlow</h1>
+                </div>
+            </div>
+            <div class="header-center">
+                <button class="date-nav-btn" id="date-prev-btn" aria-label="Previous day">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <button class="date-display" id="date-display-btn" aria-label="Select date">
+                    <span id="date-text">Today</span>
+                </button>
+                <button class="date-nav-btn" id="date-next-btn" aria-label="Next day">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+                <input type="date" id="date-picker" class="hidden-date-picker" aria-label="Date picker">
+            </div>
+            <div class="header-right">
+                <button class="icon-btn" id="settings-btn" aria-label="Settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main content -->
+        <main class="main-content" id="main-content">
+            <!-- Dashboard Section -->
+            <section class="dashboard" id="dashboard-section" aria-label="Daily summary">
+                <!-- Calorie Ring -->
+                <div class="card calorie-ring-card" id="calorie-ring-card">
+                    <div class="ring-container" id="ring-container">
+                        <svg class="progress-ring" viewBox="0 0 200 200" aria-hidden="true">
+                            <circle class="progress-ring-bg" cx="100" cy="100" r="85" />
+                            <circle class="progress-ring-fill" id="calorie-ring" cx="100" cy="100" r="85" />
+                        </svg>
+                        <div class="ring-label">
+                            <span class="ring-value" id="calories-consumed">0</span>
+                            <span class="ring-separator">/</span>
+                            <span class="ring-goal" id="calories-goal">2000</span>
+                            <span class="ring-unit">kcal</span>
+                        </div>
+                    </div>
+                    <div class="ring-footer">
+                        <span class="ring-remaining" id="calories-remaining">2000 remaining</span>
+                    </div>
+                </div>
+
+                <!-- Macro cards -->
+                <div class="macro-cards" id="macro-cards">
+                    <div class="card macro-card protein-card" id="protein-card">
+                        <div class="macro-icon protein-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8 2 4 6 4 12s4 10 8 10 8-4 8-10S16 2 12 2z"/><path d="M12 8v8M8 12h8"/></svg>
+                        </div>
+                        <div class="macro-info">
+                            <span class="macro-label">Protein</span>
+                            <div class="macro-values">
+                                <span class="macro-current" id="protein-current">0</span>
+                                <span class="macro-sep">/</span>
+                                <span class="macro-target" id="protein-target">150</span>
+                                <span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                        <div class="macro-bar-wrapper">
+                            <div class="macro-bar protein-bar" id="protein-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="card macro-card carbs-card" id="carbs-card">
+                        <div class="macro-icon carbs-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 12a6 6 0 0112 0"/><path d="M12 6v12"/><circle cx="12" cy="12" r="10"/></svg>
+                        </div>
+                        <div class="macro-info">
+                            <span class="macro-label">Carbs</span>
+                            <div class="macro-values">
+                                <span class="macro-current" id="carbs-current">0</span>
+                                <span class="macro-sep">/</span>
+                                <span class="macro-target" id="carbs-target">250</span>
+                                <span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                        <div class="macro-bar-wrapper">
+                            <div class="macro-bar carbs-bar" id="carbs-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <div class="card macro-card fat-card" id="fat-card">
+                        <div class="macro-icon fat-icon" aria-hidden="true">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+                        </div>
+                        <div class="macro-info">
+                            <span class="macro-label">Fat</span>
+                            <div class="macro-values">
+                                <span class="macro-current" id="fat-current">0</span>
+                                <span class="macro-sep">/</span>
+                                <span class="macro-target" id="fat-target">65</span>
+                                <span class="macro-unit">g</span>
+                            </div>
+                        </div>
+                        <div class="macro-bar-wrapper">
+                            <div class="macro-bar fat-bar" id="fat-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Add Section -->
+            <section class="quick-add-section" id="quick-add-section" aria-label="Add food entry">
+                <div class="card add-food-card" id="add-food-card">
+                    <h2 class="section-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        Add Food
+                    </h2>
+                    <form id="add-food-form" class="add-food-form" autocomplete="off">
+                        <div class="form-row">
+                            <div class="form-group form-group-name">
+                                <label for="food-name">Food Name</label>
+                                <input type="text" id="food-name" placeholder="e.g. Grilled Chicken" required maxlength="100">
+                            </div>
+                            <div class="form-group form-group-calories">
+                                <label for="food-calories">Calories</label>
+                                <input type="number" id="food-calories" placeholder="kcal" required min="0" max="10000" step="1">
+                            </div>
+                        </div>
+                        <div class="form-row form-row-macros">
+                            <div class="form-group">
+                                <label for="food-protein">Protein (g)</label>
+                                <input type="number" id="food-protein" placeholder="0" min="0" max="1000" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="food-carbs">Carbs (g)</label>
+                                <input type="number" id="food-carbs" placeholder="0" min="0" max="1000" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="food-fat">Fat (g)</label>
+                                <input type="number" id="food-fat" placeholder="0" min="0" max="1000" step="0.1">
+                            </div>
+                        </div>
+                        <div class="form-row form-row-meal">
+                            <div class="form-group">
+                                <label for="food-meal">Meal</label>
+                                <select id="food-meal">
+                                    <option value="breakfast">Breakfast</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="dinner">Dinner</option>
+                                    <option value="snack">Snack</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary" id="add-food-btn">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                Add Entry
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Food Log Section -->
+            <section class="food-log-section" id="food-log-section" aria-label="Food log">
+                <div class="card food-log-card" id="food-log-card">
+                    <div class="log-header">
+                        <h2 class="section-title">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            Today's Log
+                        </h2>
+                        <div class="log-filter-tabs" id="log-filter-tabs" role="tablist">
+                            <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true" id="filter-all">All</button>
+                            <button class="filter-tab" data-filter="breakfast" role="tab" aria-selected="false" id="filter-breakfast">Breakfast</button>
+                            <button class="filter-tab" data-filter="lunch" role="tab" aria-selected="false" id="filter-lunch">Lunch</button>
+                            <button class="filter-tab" data-filter="dinner" role="tab" aria-selected="false" id="filter-dinner">Dinner</button>
+                            <button class="filter-tab" data-filter="snack" role="tab" aria-selected="false" id="filter-snack">Snack</button>
+                        </div>
+                    </div>
+                    <div class="food-list" id="food-list" role="list">
+                        <!-- Entries rendered by JS -->
+                    </div>
+                    <div class="empty-state" id="empty-state">
+                        <div class="empty-icon" aria-hidden="true">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+                        </div>
+                        <p class="empty-text">No food entries yet</p>
+                        <p class="empty-subtext">Add your first meal to start tracking!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weekly Chart Section -->
+            <section class="chart-section" id="chart-section" aria-label="Weekly overview">
+                <div class="card chart-card" id="chart-card">
+                    <h2 class="section-title">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                        Weekly Overview
+                    </h2>
+                    <div class="chart-container" id="chart-container">
+                        <canvas id="weekly-chart" aria-label="Bar chart showing weekly calorie intake"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="modal" id="settings-modal-content">
+            <div class="modal-header">
+                <h2 id="settings-title">Goals & Settings</h2>
+                <button class="modal-close" id="settings-close-btn" aria-label="Close settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+            <form id="settings-form" class="settings-form">
+                <div class="settings-group">
+                    <h3>Daily Targets</h3>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label for="goal-calories">Calorie Goal (kcal)</label>
+                            <input type="number" id="goal-calories" min="500" max="10000" step="50" value="2000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="goal-protein">Protein Goal (g)</label>
+                            <input type="number" id="goal-protein" min="0" max="500" step="5" value="150" required>
+                        </div>
+                    </div>
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label for="goal-carbs">Carbs Goal (g)</label>
+                            <input type="number" id="goal-carbs" min="0" max="1000" step="5" value="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="goal-fat">Fat Goal (g)</label>
+                            <input type="number" id="goal-fat" min="0" max="500" step="5" value="65" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>Data Management</h3>
+                    <div class="settings-actions">
+                        <button type="button" class="btn btn-outline btn-danger" id="clear-today-btn">Clear Today's Log</button>
+                        <button type="button" class="btn btn-outline btn-danger" id="clear-all-btn">Clear All Data</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="save-settings-btn">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div class="modal modal-confirm" id="confirm-modal-content">
+            <div class="modal-header">
+                <h2 id="confirm-title">Confirm Action</h2>
+            </div>
+            <p class="confirm-message" id="confirm-message">Are you sure?</p>
+            <div class="modal-footer modal-footer-confirm">
+                <button type="button" class="btn btn-outline" id="confirm-cancel-btn">Cancel</button>
+                <button type="button" class="btn btn-primary btn-danger" id="confirm-ok-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
