@@ -320,7 +320,6 @@
     }
 
     function updateRingColor(isOver) {
-        // Dynamically set ring stroke color
         if (isOver) {
             dom.calorieRing.style.stroke = '#ef4444';
             dom.calorieRing.style.filter = 'drop-shadow(0 0 8px rgba(239, 68, 68, 0.4))';
@@ -514,7 +513,7 @@
 
         // Draw goal line
         var goalY = padding.top + chartH - (goals.calories / maxVal) * chartH;
-        ctx.strokeStyle = 'rgba(99, 102, 241, 0.4)';
+        ctx.strokeStyle = 'rgba(0, 255, 65, 0.4)';
         ctx.setLineDash([4, 4]);
         ctx.lineWidth = 1;
         ctx.beginPath();
@@ -524,7 +523,7 @@
         ctx.setLineDash([]);
 
         // Goal label
-        ctx.fillStyle = 'rgba(99, 102, 241, 0.6)';
+        ctx.fillStyle = 'rgba(0, 255, 65, 0.6)';
         ctx.font = '9px Inter, sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('Goal', padding.left + 4, goalY - 4);
@@ -545,11 +544,11 @@
                 gradient.addColorStop(0, 'rgba(239, 68, 68, 0.9)');
                 gradient.addColorStop(1, 'rgba(239, 68, 68, 0.3)');
             } else if (day.isToday) {
-                gradient.addColorStop(0, 'rgba(99, 102, 241, 0.9)');
-                gradient.addColorStop(1, 'rgba(99, 102, 241, 0.3)');
+                gradient.addColorStop(0, 'rgba(0, 255, 65, 0.9)');
+                gradient.addColorStop(1, 'rgba(0, 255, 65, 0.3)');
             } else {
-                gradient.addColorStop(0, 'rgba(129, 140, 248, 0.6)');
-                gradient.addColorStop(1, 'rgba(129, 140, 248, 0.15)');
+                gradient.addColorStop(0, 'rgba(57, 255, 20, 0.6)');
+                gradient.addColorStop(1, 'rgba(57, 255, 20, 0.15)');
             }
 
             ctx.fillStyle = gradient;
@@ -570,7 +569,7 @@
 
             // Glow for today
             if (day.isToday && barH > 0) {
-                ctx.shadowColor = 'rgba(99, 102, 241, 0.4)';
+                ctx.shadowColor = 'rgba(0, 255, 65, 0.4)';
                 ctx.shadowBlur = 12;
                 ctx.fill();
                 ctx.shadowBlur = 0;
@@ -594,7 +593,7 @@
             if (day.isToday) {
                 ctx.beginPath();
                 ctx.arc(x + barWidth / 2, height - padding.bottom + 28, 2.5, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(99, 102, 241, 0.8)';
+                ctx.fillStyle = 'rgba(0, 255, 65, 0.8)';
                 ctx.fill();
             }
         });
@@ -617,15 +616,15 @@
 
         var stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
         stop1.setAttribute('offset', '0%');
-        stop1.setAttribute('stop-color', '#6366f1');
+        stop1.setAttribute('stop-color', '#00ff41');
 
         var stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
         stop2.setAttribute('offset', '50%');
-        stop2.setAttribute('stop-color', '#8b5cf6');
+        stop2.setAttribute('stop-color', '#39ff14');
 
         var stop3 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
         stop3.setAttribute('offset', '100%');
-        stop3.setAttribute('stop-color', '#a78bfa');
+        stop3.setAttribute('stop-color', '#7cff5e');
 
         gradient.appendChild(stop1);
         gradient.appendChild(stop2);
